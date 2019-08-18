@@ -5,6 +5,7 @@
  */
 package net.intelie.challenges.impl;
 
+import java.util.Iterator;
 import net.intelie.challenges.Event;
 import net.intelie.challenges.EventIterator;
 
@@ -14,23 +15,36 @@ import net.intelie.challenges.EventIterator;
  */
 public class EventIteratorImpl implements EventIterator {
 
+    private Iterator<Event> iterator;
+    private Event event;
+
     @Override
     public boolean moveNext() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.iterator.hasNext()) {
+            this.event = this.iterator.next();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public Event current() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.event == null) {
+            throw new IllegalStateException("function moveNext was never called or its last result was false");
+        }
+        return this.event;
     }
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.event == null) {
+            throw new IllegalStateException("function moveNext was never called or its last result was false");
+        }
+        this.iterator.remove();
     }
 
     @Override
     public void close() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.iterator = null;
     }
 }
