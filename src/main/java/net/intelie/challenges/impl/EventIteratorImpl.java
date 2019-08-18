@@ -18,6 +18,10 @@ public class EventIteratorImpl implements EventIterator {
     private Iterator<Event> iterator;
     private Event event;
 
+    public EventIteratorImpl(Iterator<Event> iterator) {
+        this.iterator = iterator;
+    }
+
     @Override
     public boolean moveNext() {
         if (this.iterator.hasNext()) {
