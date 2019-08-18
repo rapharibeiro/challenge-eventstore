@@ -26,7 +26,7 @@ public class EventStoreImpl implements EventStore {
 
     @Override
     public void removeAll(String type) {
-        this.eventStore.values().stream().filter((event) -> (event.getType().equals(type))).forEachOrdered((event) -> {
+        this.eventStore.values().stream().filter((event) -> (event.getType().equals(type))).forEachOrdered((Event event) -> {
             this.eventStore.remove(event.getId());
         });
     }
