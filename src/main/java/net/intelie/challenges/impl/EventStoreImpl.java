@@ -5,6 +5,8 @@
  */
 package net.intelie.challenges.impl;
 
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentSkipListMap;
 import net.intelie.challenges.Event;
 import net.intelie.challenges.EventIterator;
 import net.intelie.challenges.EventStore;
@@ -15,24 +17,28 @@ import net.intelie.challenges.EventStore;
  */
 public class EventStoreImpl implements EventStore {
 
+    private final ConcurrentSkipListMap<String, Event> eventStore = new ConcurrentSkipListMap<>();
+
     @Override
     public void insert(Event event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.eventStore.putIfAbsent(event.getId(), event);
     }
 
     @Override
     public void removeAll(String type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.eventStore.values().stream().filter((event) -> (event.getType().equals(type))).forEachOrdered((event) -> {
+            this.eventStore.remove(event.getId());
+        });
     }
 
     @Override
     public EventIterator query(String type, long startTime, long endTime) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Iterator<Event> iterator = eventStore.values().stream().filter(event -> type.equals(event.getType()) && startTime <= event.getTimestamp() && endTime > event.getTimestamp()).iterator();
+        return new EventIteratorImpl(iterator);
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.eventStore.size();
     }
-    
 }
