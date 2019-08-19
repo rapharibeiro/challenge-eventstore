@@ -15,7 +15,7 @@ import net.intelie.challenges.EventIterator;
  */
 public class EventIteratorImpl implements EventIterator {
 
-    private Iterator<Event> iterator;
+    private final Iterator<Event> iterator;
     private Event event;
 
     public EventIteratorImpl(Iterator<Event> iterator) {
@@ -23,7 +23,7 @@ public class EventIteratorImpl implements EventIterator {
     }
 
     @Override
-    public boolean moveNext() {
+    public synchronized boolean moveNext() {
         if (this.iterator.hasNext()) {
             this.event = this.iterator.next();
             return true;
@@ -32,7 +32,7 @@ public class EventIteratorImpl implements EventIterator {
     }
 
     @Override
-    public Event current() {
+    public synchronized Event current() {
         if (this.event == null) {
             throw new IllegalStateException("function moveNext was never called or its last result was false");
         }
@@ -40,7 +40,7 @@ public class EventIteratorImpl implements EventIterator {
     }
 
     @Override
-    public void remove() {
+    public synchronized void remove() {
         if (this.event == null) {
             throw new IllegalStateException("function moveNext was never called or its last result was false");
         }
@@ -49,6 +49,6 @@ public class EventIteratorImpl implements EventIterator {
 
     @Override
     public void close() throws Exception {
-        this.iterator = null;
+//        this.iterator = null;
     }
 }
