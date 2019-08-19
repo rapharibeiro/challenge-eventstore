@@ -1,10 +1,10 @@
-# Technologies used
+# Technologies
 
 * Arch Linux - System
 * Netbeans - IDE
 * Zsh - Bash for git
 
-## Concepts used
+## Concepts
 
 * Gitflow - Git usage logic.
 * Semantic versioning -  For version number. I kept 1.0.0 because it was the initial proposal the features created.
